@@ -19,7 +19,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
     <html lang="en">
       <body className={`${inter.variable}`}>
         <Header />
-        <main className="max-w-6xl mx-auto mt-16">{children}</main>
+        <main className="mx-auto mt-16 max-w-6xl">{children}</main>
       </body>
     </html>
   )

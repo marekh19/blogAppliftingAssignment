@@ -13,16 +13,20 @@ export const Header: FC = () => {
   const currentPath = usePathname()
 
   return (
-    <header className="bg-light-gray h-14">
-      <nav className="max-w-6xl mx-auto flex justify-between items-center h-full">
+    <header className="h-14 bg-gray-50">
+      <nav className="mx-auto flex h-full max-w-6xl items-center justify-between">
         <ul className="flex items-center gap-10 text-secondary">
-          <li>
-            <Image
-              src={logo}
-              alt="Applifting Blog Logo"
-              className="mix-blend-multiply"
-            />
-          </li>
+          <Link href={Routes.HOME}>
+            <li>
+              <Image
+                src={logo}
+                alt="Applifting Blog Logo"
+                title="Go to homepage"
+                aria-label="Go to homepage"
+                className="mix-blend-multiply"
+              />
+            </li>
+          </Link>
           <Link href={Routes.HOME}>
             <li className={currentPath === Routes.HOME ? 'text-body' : ''}>
               Recent Articles

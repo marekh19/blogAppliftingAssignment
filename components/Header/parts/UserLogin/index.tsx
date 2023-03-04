@@ -1,26 +1,29 @@
 'use client'
+import Link from 'next/link'
 import type { FC } from 'react'
 import { useState } from 'react'
+
+import { Routes } from '~/constants/routes'
 
 import { LoginIcon } from './parts/LoginIcon'
 
 export const UserLogin: FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true)
-
-  const handleLogin = () => {
-    setIsLoggedIn((prev) => (prev ? false : true))
-  }
+  const [isLoggedIn] = useState<boolean>(false)
 
   return (
-    <button type="button" onClick={handleLogin}>
+    <div>
       {!isLoggedIn ? (
-        <p>Hi User</p>
+        <Link href={Routes.LOGIN}>
+          <button type="button">
+            <span className="text-blue-secondary">
+              Log in&nbsp;
+              <LoginIcon className="inline-block" />
+            </span>
+          </button>
+        </Link>
       ) : (
-        <span className="text-blue-secondary">
-          Log in&nbsp;
-          <LoginIcon className="inline-block" />
-        </span>
+        <p>Hi User</p>
       )}
-    </button>
+    </div>
   )
 }
