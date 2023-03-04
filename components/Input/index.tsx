@@ -4,7 +4,7 @@ import { forwardRef } from 'react'
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   label: string
   error?: string | null
-  className?: string | ''
+  className?: string
 }
 
 export const Input: FC<Props> = forwardRef<HTMLInputElement, Props>(

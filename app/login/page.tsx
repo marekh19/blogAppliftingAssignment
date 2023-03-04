@@ -74,7 +74,7 @@ const LoginPage: NextPage = () => {
           content="Log In"
           isSubmit
           className="ml-full mt-8 mr-0"
-          disabled={isSubmitting}
+          isDisabled={isSubmitting}
         />
       </form>
     </div>
