@@ -1,9 +1,11 @@
-const HomePage = () => {
+import type { NextPage } from 'next'
+
+const HomePage: NextPage = () => {
   return (
-    <main>
-      <h1>Hello</h1>
-      <p>This is some text</p>
-    </main>
+    <>
+      <h1 className="text-4xl">Recent Articles</h1>
+      <p>Articles will be here</p>
+    </>
   )
 }
 
