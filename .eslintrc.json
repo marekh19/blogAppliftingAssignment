@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "@strv/react",
+    "@strv/typescript",
+    "@strv/typescript/react"
+  ],
+
+  "rules": {
+    "import/no-default-export": "off" // because of Next.js 13 app directory
+  },
+
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }
