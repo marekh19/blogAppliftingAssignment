@@ -1,3 +1,4 @@
+import axios from 'axios'
 import type { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth'
 // eslint-disable-next-line import/no-named-as-default
@@ -34,21 +35,23 @@ export const authOptions: NextAuthOptions = {
         if (credentials) {
           const { username, password } = credentials
 
-          const res = await fetch(`${apiUrl}/login`, {
-            method: 'POST',
-            headers: {
-              'X-API-KEY': apiKey,
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              password,
+          const res = await axios.post(
+            `${apiUrl}/login`,
+            {
               username,
-            }),
-          })
-          const user = (await res.json()) as UserData
+              password,
+            },
+            {
+              headers: {
+                'X-API-KEY': apiKey,
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+            }
+          )
+          const user = (await res.data) as UserData
 
-          if (res.ok && user) {
+          if (res.status === 200 && user) {
             console.log({ user })
             return user
           } else return null
