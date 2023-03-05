@@ -1,13 +1,19 @@
 'use client'
 import type { NextPage } from 'next'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
 
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
+import { Routes } from '~/constants/routes'
 import { loginValidators } from '~/utils/auth/loginValidation'
 
 const LoginPage: NextPage = () => {
+  //router
+  const router = useRouter()
+
   // user data
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,7 +26,7 @@ const LoginPage: NextPage = () => {
   // submitting state
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const errors = {
@@ -35,13 +41,33 @@ const LoginPage: NextPage = () => {
       setSubmitError(null)
       setIsSubmitting(true)
 
-      // send login request and persist user
+      const result = await signIn('credentials', {
+        username: email,
+        password: password,
+        redirect: false,
+      })
+      if (result?.error) {
+        switch (result.status) {
+          case 401:
+            setSubmitError('Invalid credentials')
+            break
+          default:
+            setSubmitError('Something went wrong')
+            break
+        }
+      }
+      if (result?.ok) {
+        void router.push(Routes.HOME)
+      }
+
+      setIsSubmitting(false)
     }
   }
 
   return (
     <div className="mx-auto max-w-[23rem] rounded-lg p-8 shadow-normal">
       <h3 className="text-[28px] font-medium">Log In</h3>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={handleLogin} className="mt-6 text-right">
         <Input
           className="text-left"
@@ -69,9 +95,9 @@ const LoginPage: NextPage = () => {
             setPassword(event.target.value)
           }}
         />
-        {submitError ? <p>{submitError}</p> : null}
+        {submitError ? <p className="text-error">{submitError}</p> : null}
         <Button
-          content="Log In"
+          content={isSubmitting ? 'Logging In' : 'Log In'}
           isSubmit
           className="ml-full mt-8 mr-0"
           isDisabled={isSubmitting}

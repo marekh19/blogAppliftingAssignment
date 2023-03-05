@@ -12,13 +12,13 @@ module.exports = {
       'blue-secondary': '#2B7EFB',
       error: '#DC3545',
     },
-    fontFamily: {
-      body: 'var(--body-font)',
-    },
     extend: {
       boxShadow: {
         normal: '0px 16px 48px rgba(0, 0, 0, 0.175);',
         focus: '0px 0px 6px #2079FF;',
+      },
+      fontFamily: {
+        inter: ['var(--font-inter)'],
       },
     },
   },
