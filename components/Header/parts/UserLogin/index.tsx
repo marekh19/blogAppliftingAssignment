@@ -36,7 +36,11 @@ export const UserLogin: FC = () => {
               />
               {isDropMenuVisible ? <DropdownMenu /> : null}
             </div>
-            <Link href={Routes.MY_ARTICLES}>
+            <Link
+              href={Routes.MY_ARTICLES}
+              aria-label="User Articles"
+              title="User Articles"
+            >
               <UserIcon className="h-8 w-8 rounded-full bg-gray-100" />
             </Link>
           </div>
