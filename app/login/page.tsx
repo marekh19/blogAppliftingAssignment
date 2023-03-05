@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import { Routes } from '~/constants/routes'
-import { loginValidators } from '~/utils/auth/loginValidation'
+import { loginValidators } from '~/utils/validators/loginValidation'
 
 const LoginPage: NextPage = () => {
   //router

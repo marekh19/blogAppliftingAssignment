@@ -1,13 +1,10 @@
-import axios from 'axios'
 import type { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth'
 // eslint-disable-next-line import/no-named-as-default
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { Routes } from '~/constants/routes'
-
-const apiUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL ?? ''
-const apiKey = process.env.NEXT_PUBLIC_API_KEY ?? ''
+import { loginAndGetUserData } from '~/utils/api/login'
 
 type UserData = {
   access_token: string
@@ -21,40 +18,20 @@ export const authOptions: NextAuthOptions = {
   providers: [
     // ...add more providers here
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
       name: 'Credentials',
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      // credentials: {
-      //   username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
-      //   password: { label: 'Password', type: 'password' },
-      // },
       async authorize(credentials) {
         if (credentials) {
           const { username, password } = credentials
 
-          const res = await axios.post(
-            `${apiUrl}/login`,
-            {
-              username,
-              password,
-            },
-            {
-              headers: {
-                'X-API-KEY': apiKey,
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
-            }
-          )
-          const user = (await res.data) as UserData
+          const res = await loginAndGetUserData({ username, password })
+          if (res) {
+            const user = (await res.data) as UserData
 
-          if (res.status === 200 && user) {
-            console.log({ user })
-            return user
-          } else return null
+            if (res.status === 200 && user) {
+              console.log({ user })
+              return user
+            } else return null
+          }
         }
       },
     }),
@@ -63,6 +40,7 @@ export const authOptions: NextAuthOptions = {
     // According to NextAuth docs
     // eslint-disable-next-line @typescript-eslint/require-await
     async jwt({ token, user }) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return { ...token, ...user }
     },
     // eslint-disable-next-line @typescript-eslint/require-await
