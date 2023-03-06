@@ -32,7 +32,7 @@ const ImageUploader: FC = () => {
             },
           })
           alert('Image uploaded successfully!')
-          console.log(res.data)
+          console.log(res)
           setIsFileUploaded(true)
         } catch (error) {
           if (error instanceof Error) {

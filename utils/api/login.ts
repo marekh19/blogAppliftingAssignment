@@ -31,6 +31,7 @@ export const loginAndGetUserData = async ({
     if (error instanceof Error) {
       console.error(error.message)
     }
+    return null
   }
 }
 

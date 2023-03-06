@@ -19,6 +19,11 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
     CredentialsProvider({
       name: 'Credentials',
+      credentials: {
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
+      },
+      //@ts-ignore NextAuth has some issues with TS unfortunately
       async authorize(credentials) {
         if (credentials) {
           const { username, password } = credentials
@@ -28,7 +33,6 @@ export const authOptions: NextAuthOptions = {
             const user = (await res.data) as UserData
 
             if (res.status === 200 && user) {
-              console.log({ user })
               return user
             } else return null
           }
@@ -39,13 +43,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // According to NextAuth docs
     // eslint-disable-next-line @typescript-eslint/require-await
-    async jwt({ token, user }) {
+    jwt({ token, user }) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return { ...token, ...user }
     },
     // eslint-disable-next-line @typescript-eslint/require-await
-    async session({ session, token }) {
-      session.user = token
+    session({ session, token }) {
+      session.user.access_token = token.access_token
       return session
     },
   },
@@ -56,7 +60,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: Routes.LOGIN,
   },
-  secret: process.env.NEXTAUTH_SECRET ?? undefined,
+  secret: process.env.NEXTAUTH_SECRET ?? 'secret',
 }
 
 export default NextAuth(authOptions)
