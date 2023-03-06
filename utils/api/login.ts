@@ -34,5 +34,3 @@ export const loginAndGetUserData = async ({
     return null
   }
 }
-
-export const uploadImage = async () => {}

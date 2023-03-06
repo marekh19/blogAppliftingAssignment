@@ -4,8 +4,7 @@ import { useSession } from 'next-auth/react'
 import type { FC, ChangeEvent } from 'react'
 import { useState } from 'react'
 
-const apiUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL ?? ''
-const apiKey = process.env.NEXT_PUBLIC_API_KEY ?? ''
+import { apiKey, apiUrl } from '~/utils/api/lib'
 
 const ImageUploader: FC = () => {
   // session data
@@ -31,7 +30,6 @@ const ImageUploader: FC = () => {
               Authorization: accessToken,
             },
           })
-          alert('Image uploaded successfully!')
           console.log(res)
           setIsFileUploaded(true)
         } catch (error) {
