@@ -7,6 +7,7 @@ type LoginCredentials = {
   password: string
 }
 
+// POST /login
 export const loginAndGetUserData = async ({
   username,
   password,
