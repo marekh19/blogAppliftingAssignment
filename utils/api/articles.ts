@@ -54,19 +54,21 @@ type ArticleWithoutDetails = {
 // GET /articles
 export const getAllArticles = async () => {
   try {
-    const res = await axios.get(
-      `${apiUrl}/articles`,
-
-      {
-        headers: {
-          'X-API-KEY': apiKey,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    )
+    const res = await fetch(`${apiUrl}/articles`, {
+      method: 'GET',
+      cache: 'no-cache',
+      headers: {
+        'X-API-KEY': apiKey,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      next: {
+        revalidate: 10,
+      },
+    })
     if (res && res.status === 200) {
-      const articles = (await res.data.items) as ArticleWithoutDetails[]
+      const data = await res.json()
+      const articles = data.items as ArticleWithoutDetails[]
       return articles
     }
     return null
