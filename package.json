@@ -24,6 +24,7 @@
     "@strv/eslint-config-react": "^4.2.0",
     "@strv/eslint-config-typescript": "^3.2.0",
     "@strv/prettier-config": "^2.0.0",
+    "@tailwindcss/typography": "^0.5.9",
     "@types/node": "^18.14.6",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",

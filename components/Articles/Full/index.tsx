@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 import type { ArticleFullDetails } from '~/utils/api/articles'
 import { prettifyDate } from '~/utils/formatters'
@@ -14,7 +15,9 @@ export const FullArticle: FC<Props> = ({ article }) => {
       <p className="text-sm text-secondary">
         {prettifyDate(article.createdAt)}
       </p>
-      <div className="border-b-2 border-gray-100 py-6">{article.content}</div>
+      <div className="border-b-2 border-gray-100 py-6">
+        <ReactMarkdown className="prose">{article.content}</ReactMarkdown>
+      </div>
     </article>
   )
 }
