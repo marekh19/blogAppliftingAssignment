@@ -1,5 +1,5 @@
 'use client'
-import { Inter } from '@next/font/google'
+import { Inter } from 'next/font/google'
 import type { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import type { FC, ReactNode } from 'react'
