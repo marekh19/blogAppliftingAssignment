@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 
-import { Article } from '@components/Article'
+import { ArticleSummaryInHomepage } from '@components/Articles/InHomepage'
 import { getAllArticles } from '~/utils/api/articles'
 
 import Loading from './loading'
@@ -15,7 +15,7 @@ const HomePage = async () => {
         <div className="my-14 flex flex-col gap-12">
           {articles ? (
             articles.map((a) => (
-              <Article
+              <ArticleSummaryInHomepage
                 key={a.articleId}
                 articleId={a.articleId}
                 title={a.title}

@@ -11,7 +11,12 @@ type Props = {
   createdAt: string
 }
 
-export const Article: FC<Props> = ({ articleId, title, perex, createdAt }) => {
+export const ArticleSummaryInHomepage: FC<Props> = ({
+  articleId,
+  title,
+  perex,
+  createdAt,
+}) => {
   return (
     <article className="max-w-xl">
       <Link href={`${Routes.ARTICLE}/${articleId}`}>
