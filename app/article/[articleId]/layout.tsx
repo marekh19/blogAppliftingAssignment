@@ -14,7 +14,7 @@ const ArticleLayout = async ({
   const relatedArticles = articles
     ? // .filter() to show only articles different than the current one
       // eventually could do .slice(0,X) after .filter() to display only some number of articles
-      articles.filter((a) => a.articleId !== params.articleId)
+      articles.filter((a) => a.articleId !== params.articleId).slice(0, 5)
     : null
 
   return (

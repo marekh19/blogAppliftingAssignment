@@ -79,3 +79,44 @@ export const getAllArticles = async () => {
     return null
   }
 }
+
+export type ArticleFullDetails = {
+  articleId: string
+  title: string
+  perex: string
+  imageId: string | null
+  createdAt: string
+  lastUpdatedAt: string
+  content: string
+  comments: [
+    {
+      commentId: string
+      articleId: string
+      author: string
+      content: string
+      postedAt: string
+      score: number
+    }
+  ]
+}
+
+export const getSingleArticle = async (articleId: string) => {
+  try {
+    const res = await axios.get(`${apiUrl}/articles/${articleId}`, {
+      headers: {
+        'X-API-KEY': apiKey,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+    if (res.status === 200) {
+      return (await res.data) as ArticleFullDetails
+    }
+    return null
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+    return null
+  }
+}

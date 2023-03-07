@@ -18,7 +18,7 @@ export const SmallArticleInAside: FC<Props> = ({ articleId, perex, title }) => {
   }
 
   return (
-    <article>
+    <article className="first:mt0 my-6 last:mb-0">
       <Link href={`${Routes.ARTICLE}/${articleId}`}>
         <h6 className="mb-2 font-medium">{title}</h6>
         <p>{getTruncatedPerex(perex)}</p>
