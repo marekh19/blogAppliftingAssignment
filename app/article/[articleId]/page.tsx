@@ -9,7 +9,6 @@ type Params = {
 
 const ArticleDetailPage = async ({ params }: Params) => {
   const article = await getSingleArticle(params.articleId)
-  console.log(params)
 
   return (
     <div>
