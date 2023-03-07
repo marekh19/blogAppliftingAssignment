@@ -56,7 +56,7 @@ export const getAllArticles = async () => {
   try {
     const res = await fetch(`${apiUrl}/articles`, {
       method: 'GET',
-      cache: 'no-cache',
+      cache: 'no-store',
       headers: {
         'X-API-KEY': apiKey,
         'Content-Type': 'application/json',

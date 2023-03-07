@@ -1,5 +1,9 @@
+import { Suspense } from 'react'
+
 import { Article } from '@components/Article'
 import { getAllArticles } from '~/utils/api/articles'
+
+import Loading from './loading'
 
 const HomePage = async () => {
   const articles = await getAllArticles()
@@ -7,21 +11,23 @@ const HomePage = async () => {
   return (
     <>
       <h1 className="text-4xl font-medium">Recent Articles</h1>
-      <div className="my-14 flex flex-col gap-12">
-        {articles ? (
-          articles.map((a) => (
-            <Article
-              key={a.articleId}
-              articleId={a.articleId}
-              title={a.title}
-              createdAt={a.createdAt}
-              perex={a.perex}
-            />
-          ))
-        ) : (
-          <p>No articles</p>
-        )}
-      </div>
+      <Suspense fallback={<Loading />}>
+        <div className="my-14 flex flex-col gap-12">
+          {articles ? (
+            articles.map((a) => (
+              <Article
+                key={a.articleId}
+                articleId={a.articleId}
+                title={a.title}
+                createdAt={a.createdAt}
+                perex={a.perex}
+              />
+            ))
+          ) : (
+            <p className="text-2xl">No articles found</p>
+          )}
+        </div>
+      </Suspense>
     </>
   )
 }
