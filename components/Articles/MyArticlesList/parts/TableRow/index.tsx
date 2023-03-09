@@ -1,4 +1,7 @@
+import Link from 'next/link'
 import type { FC } from 'react'
+
+import { Routes } from '~/constants/routes'
 
 import { DeleteIcon } from './parts/DeleteIcon'
 import { EditIcon } from './parts/EditIcon'
@@ -20,7 +23,9 @@ export const TableRow: FC<Props> = ({
 }) => {
   return (
     <tr className="h-12 border-t-2 border-b-2 border-gray-100">
-      <td className="h-full">{title}</td>
+      <td className="h-full">
+        <Link href={`${Routes.ARTICLE}/${articleId}`}>{title}</Link>
+      </td>
       <td className="h-full">{perex}</td>
       <td className="flex h-full items-center justify-center gap-6">
         <button
