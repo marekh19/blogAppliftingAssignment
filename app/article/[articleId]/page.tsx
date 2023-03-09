@@ -1,5 +1,5 @@
 import { FullArticle } from '~/components/Articles/Full'
-import { getSingleArticle } from '~/utils/api/articles'
+import { getArticle } from '~/utils/api/articles'
 
 type Params = {
   params: {
@@ -8,7 +8,7 @@ type Params = {
 }
 
 const ArticleDetailPage = async ({ params }: Params) => {
-  const article = await getSingleArticle(params.articleId)
+  const article = await getArticle(params.articleId)
 
   return (
     <div>

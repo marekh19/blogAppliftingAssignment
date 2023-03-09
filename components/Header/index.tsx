@@ -16,27 +16,25 @@ export const Header: FC = () => {
     <header className="h-14 bg-gray-50">
       <nav className="mx-auto flex h-full max-w-6xl items-center justify-between">
         <ul className="flex items-center gap-10 text-secondary">
-          <Link href={Routes.HOME}>
-            <li>
+          <li>
+            <Link
+              href={Routes.HOME}
+              title="Go to homepage"
+              aria-label="Go to homepage"
+            >
               <Image
                 src={logo}
                 alt="Applifting Blog Logo"
-                title="Go to homepage"
-                aria-label="Go to homepage"
                 className="mix-blend-multiply"
               />
-            </li>
-          </Link>
-          <Link href={Routes.HOME}>
-            <li className={currentPath === Routes.HOME ? 'text-body' : ''}>
-              Recent Articles
-            </li>
-          </Link>
-          <Link href={Routes.ABOUT}>
-            <li className={currentPath === Routes.ABOUT ? 'text-body' : ''}>
-              About
-            </li>
-          </Link>
+            </Link>
+          </li>
+          <li className={currentPath === Routes.HOME ? 'text-body' : ''}>
+            <Link href={Routes.HOME}>Recent Articles</Link>
+          </li>
+          <li className={currentPath === Routes.ABOUT ? 'text-body' : ''}>
+            <Link href={Routes.ABOUT}>About</Link>
+          </li>
         </ul>
         <UserLogin />
       </nav>

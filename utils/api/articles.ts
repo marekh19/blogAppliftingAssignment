@@ -8,7 +8,7 @@ type CreateArticleParams = {
   title: string
   perex: string
   content: string
-  access_token: string
+  accessToken: string
 }
 
 // POST /articles
@@ -16,7 +16,7 @@ export const createArticle = async ({
   title,
   perex,
   content,
-  access_token,
+  accessToken,
 }: CreateArticleParams) => {
   try {
     const res = await axios.post(
@@ -31,7 +31,7 @@ export const createArticle = async ({
           'X-API-KEY': apiKey,
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authorization: access_token,
+          Authorization: accessToken,
         },
       }
     )
@@ -56,6 +56,7 @@ type ArticleWithoutDetails = {
 // GET /articles
 export const getAllArticles = async () => {
   try {
+    // fetch here because of server components cache no-store
     const res = await fetch(`${apiUrl}/articles`, {
       method: 'GET',
       cache: 'no-store',
@@ -82,7 +83,8 @@ export const getAllArticles = async () => {
   }
 }
 
-export const getSingleArticle = async (articleId: string) => {
+// GET /articles/{articleId}
+export const getArticle = async (articleId: string) => {
   try {
     const res = await axios.get(`${apiUrl}/articles/${articleId}`, {
       headers: {
@@ -103,6 +105,7 @@ export const getSingleArticle = async (articleId: string) => {
   }
 }
 
+// DELETE /articles/{articleId}
 export const deleteArticle = async (articleId: string, accessToken: string) => {
   try {
     const res = await axios.delete(`${apiUrl}/articles/${articleId}`, {
@@ -117,6 +120,48 @@ export const deleteArticle = async (articleId: string, accessToken: string) => {
       return true
     }
     return null
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+    return null
+  }
+}
+
+type UpdateArticleParams = {
+  articleId: string
+  title: string
+  perex: string
+  content: string
+  accessToken: string
+}
+
+// PATCH /articles/{articleId}
+export const patchArticle = async ({
+  title,
+  perex,
+  content,
+  accessToken,
+  articleId,
+}: UpdateArticleParams) => {
+  try {
+    const res = await axios.patch(
+      `${apiUrl}/articles/${articleId}`,
+      {
+        title,
+        perex,
+        content,
+      },
+      {
+        headers: {
+          'X-API-KEY': apiKey,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: accessToken,
+        },
+      }
+    )
+    return res
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message)

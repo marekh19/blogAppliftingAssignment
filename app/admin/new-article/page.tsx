@@ -15,6 +15,7 @@ import { articleValidators } from '~/utils/validators/articleValidation'
 const CreateArticlePage: NextPage = () => {
   // session
   const { data: session } = useSession()
+  const accessToken = session?.user.access_token ?? ''
 
   // article data
   const [title, setTitle] = useState('')
@@ -51,7 +52,7 @@ const CreateArticlePage: NextPage = () => {
       setIsSubmitting(true)
 
       const res = await createArticle({
-        access_token: session.user.access_token,
+        accessToken,
         title,
         perex,
         content,
@@ -59,9 +60,7 @@ const CreateArticlePage: NextPage = () => {
       if (res?.status === 200) {
         setIsSubmitting(false)
         setIsSubmitted(true)
-        console.log(res)
       } else {
-        console.log(res)
         setSubmitError('Something went wrong')
       }
     }
