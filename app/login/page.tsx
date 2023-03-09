@@ -67,7 +67,6 @@ const LoginPage: NextPage = () => {
   return (
     <div className="mx-auto max-w-[23rem] rounded-lg p-8 shadow-normal">
       <h3 className="text-[28px] font-medium">Log In</h3>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={handleLogin} className="mt-6 text-right">
         <Input
           className="text-left"

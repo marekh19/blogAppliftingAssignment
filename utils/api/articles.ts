@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import type { ArticleFullDetails } from '~/components/Articles/types'
+
 import { apiUrl, apiKey } from './lib'
 
 type CreateArticleParams = {
@@ -80,26 +82,6 @@ export const getAllArticles = async () => {
   }
 }
 
-export type ArticleFullDetails = {
-  articleId: string
-  title: string
-  perex: string
-  imageId: string | null
-  createdAt: string
-  lastUpdatedAt: string
-  content: string
-  comments: [
-    {
-      commentId: string
-      articleId: string
-      author: string
-      content: string
-      postedAt: string
-      score: number
-    }
-  ]
-}
-
 export const getSingleArticle = async (articleId: string) => {
   try {
     const res = await axios.get(`${apiUrl}/articles/${articleId}`, {
@@ -111,6 +93,28 @@ export const getSingleArticle = async (articleId: string) => {
     })
     if (res.status === 200) {
       return (await res.data) as ArticleFullDetails
+    }
+    return null
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+    return null
+  }
+}
+
+export const deleteArticle = async (articleId: string, accessToken: string) => {
+  try {
+    const res = await axios.delete(`${apiUrl}/articles/${articleId}`, {
+      headers: {
+        'X-API-KEY': apiKey,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: accessToken,
+      },
+    })
+    if (res.status === 204) {
+      return true
     }
     return null
   } catch (error) {

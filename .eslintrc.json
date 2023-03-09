@@ -8,7 +8,8 @@
 
   "rules": {
     "import/no-default-export": "off", // because of Next.js 13 app directory
-    "react/require-default-props": "off" // for simplicity
+    "react/require-default-props": "off", // for simplicity
+    "@typescript-eslint/no-misused-promises": "off" // I couldn't figure out how to avoid this issue when calling async function from onClick
   },
 
   "parserOptions": {

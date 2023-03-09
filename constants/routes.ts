@@ -5,4 +5,5 @@ export enum Routes {
   MY_ARTICLES = '/admin/my-articles',
   CREATE_ARTICLE = '/admin/new-article',
   ARTICLE = '/article',
+  EDIT_ARTICLE = 'admin/edit-article',
 }

@@ -74,7 +74,6 @@ const CreateArticlePage: NextPage = () => {
   return (
     <div>
       {!isSubmitted ? (
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         <form onSubmit={handleSubmit}>
           <div className="flex gap-8">
             <h1 className="text-4xl font-medium">Create New Article</h1>

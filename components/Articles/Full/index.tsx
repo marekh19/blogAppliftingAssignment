@@ -1,8 +1,9 @@
 import type { FC } from 'react'
 import ReactMarkdown from 'react-markdown'
 
-import type { ArticleFullDetails } from '~/utils/api/articles'
 import { prettifyDate } from '~/utils/formatters'
+
+import type { ArticleFullDetails } from '../types'
 
 type Props = {
   article: ArticleFullDetails
