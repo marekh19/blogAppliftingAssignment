@@ -13,10 +13,7 @@ type UserData = {
 }
 
 export const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   providers: [
-    // ...add more providers here
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -32,7 +29,7 @@ export const authOptions: NextAuthOptions = {
           if (res) {
             const user = (await res.data) as UserData
 
-            if (res.status === 200 && user) {
+            if (user && res.status === 200) {
               return user
             } else return null
           }
@@ -43,13 +40,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // According to NextAuth docs
     // eslint-disable-next-line @typescript-eslint/require-await
-    jwt({ token, user }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    async jwt({ token, user }) {
       return { ...token, ...user }
     },
     // eslint-disable-next-line @typescript-eslint/require-await
-    session({ session, token }) {
-      session.user.access_token = token.access_token
+    async session({ session, token }) {
+      session.user = token as UserData
       return session
     },
   },
@@ -60,6 +56,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: Routes.LOGIN,
   },
+  // for production deployment
   secret: process.env.NEXTAUTH_SECRET ?? 'secret',
 }
 

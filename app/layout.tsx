@@ -1,11 +1,9 @@
-'use client'
 import { Inter } from 'next/font/google'
-import type { Session } from 'next-auth'
-import { SessionProvider } from 'next-auth/react'
 import type { FC, ReactNode } from 'react'
 
 import { Header } from '@components/Header'
 
+import { Provider } from './Provider'
 import '~/styles/globals.css'
 
 const inter = Inter({
@@ -15,10 +13,9 @@ const inter = Inter({
 
 type Props = {
   children: ReactNode
-  session: Session | null | undefined
 }
 
-const RootLayout: FC<Props> = ({ children, session }) => {
+const RootLayout: FC<Props> = ({ children }) => {
   return (
     <html lang="en">
       <head>
@@ -28,12 +25,12 @@ const RootLayout: FC<Props> = ({ children, session }) => {
           content="Blog assignment built with Next.js 13 and React Server Components"
         />
       </head>
-      <SessionProvider session={session}>
+      <Provider>
         <body className={`${inter.variable} font-inter`}>
           <Header />
           <main className="mx-auto mt-16 max-w-6xl">{children}</main>
         </body>
-      </SessionProvider>
+      </Provider>
     </html>
   )
 }
