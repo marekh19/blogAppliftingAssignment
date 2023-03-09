@@ -1,4 +1,4 @@
-import { FullArticle } from '~/components/Articles/Full'
+import { FullArticle } from '@components/Articles/Full'
 import { getArticle } from '~/utils/api/articles'
 
 type Params = {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import type { ArticleFullDetails } from '~/components/Articles/types'
+import type { ArticleFullDetails } from '@components/Articles/types'
 
 import { apiUrl, apiKey } from './lib'
 

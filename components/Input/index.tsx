@@ -5,10 +5,23 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   label: string
   error?: string | null
   className?: string
+  isWithoutLabel?: boolean
 }
 
 export const Input: FC<Props> = forwardRef<HTMLInputElement, Props>(
-  ({ label, name, type, error, placeholder, className, ...rest }, ref) => {
+  (
+    {
+      label,
+      name,
+      type,
+      error,
+      placeholder,
+      className,
+      isWithoutLabel,
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <div className={className}>
         <label>
@@ -19,7 +32,9 @@ export const Input: FC<Props> = forwardRef<HTMLInputElement, Props>(
             type={type}
             ref={ref}
             {...rest}
-            className={`mt-2 h-[36px] w-full rounded-md border ${
+            className={`${
+              isWithoutLabel ? 'mt-0' : 'mt-2'
+            } h-[36px] w-full rounded-md border ${
               error ? 'border-error' : 'border-gray-100'
             } px-3 py-[6px] placeholder-secondary outline-none focus:border-blue focus:shadow-focus`}
           />
