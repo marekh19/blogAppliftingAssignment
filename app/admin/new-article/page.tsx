@@ -3,10 +3,12 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import { TextArea } from '@components/Textarea'
+import { TogglePreview } from '@components/ToggleSwitch'
 import { createArticle } from '~/utils/api/articles'
 import { articleValidators } from '~/utils/validators/articleValidation'
 
@@ -29,8 +31,7 @@ const CreateArticlePage: NextPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  // TODO: Add State with markdown preview
-  // const [isPreviewEnabled, setIsPreviewEnabled] = useState(false)
+  const [isPreviewEnabled, setIsPreviewEnabled] = useState(false)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -66,6 +67,10 @@ const CreateArticlePage: NextPage = () => {
     }
   }
 
+  const handlePreview = () => {
+    setIsPreviewEnabled((prev) => !prev)
+  }
+
   return (
     <div>
       {!isSubmitted ? (
@@ -73,11 +78,9 @@ const CreateArticlePage: NextPage = () => {
         <form onSubmit={handleSubmit}>
           <div className="flex gap-8">
             <h1 className="text-4xl font-medium">Create New Article</h1>
-            <Button
-              content={isSubmitting ? 'Publishing' : 'Publish Article'}
-              isSubmit
-              isDisabled={isSubmitting}
-            />
+            <Button isSubmit isDisabled={isSubmitting}>
+              {isSubmitting ? 'Publishing' : 'Publish Article'}
+            </Button>
           </div>
           {submitError ? <p>{submitError}</p> : null}
           <Input
@@ -106,19 +109,28 @@ const CreateArticlePage: NextPage = () => {
               setPerex(event.target.value)
             }}
           />
-          <TextArea
-            className="mt-10 max-w-3xl"
-            height="h-96"
-            label="Content"
-            name="content"
-            placeholder="Supports markdown. Yay!"
-            value={content}
-            error={contentError}
-            onChange={(event) => {
-              setContentError(null)
-              setContent(event.target.value)
-            }}
+          <TogglePreview
+            isToggled={isPreviewEnabled}
+            className="mt-10 mb-2"
+            onClick={handlePreview}
           />
+          {isPreviewEnabled ? (
+            <ReactMarkdown className="prose max-w-3xl">{content}</ReactMarkdown>
+          ) : (
+            <TextArea
+              className="max-w-3xl"
+              height="h-96"
+              label="Content"
+              name="content"
+              placeholder="Supports markdown. Yay!"
+              value={content}
+              error={contentError}
+              onChange={(event) => {
+                setContentError(null)
+                setContent(event.target.value)
+              }}
+            />
+          )}
         </form>
       ) : (
         <h1 className="text-4xl font-medium">

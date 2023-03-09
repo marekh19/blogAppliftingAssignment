@@ -97,11 +97,12 @@ const LoginPage: NextPage = () => {
         />
         {submitError ? <p className="text-error">{submitError}</p> : null}
         <Button
-          content={isSubmitting ? 'Logging In' : 'Log In'}
           isSubmit
           className="ml-full mt-8 mr-0"
           isDisabled={isSubmitting}
-        />
+        >
+          {isSubmitting ? 'Logging In' : 'Log In'}
+        </Button>
       </form>
     </div>
   )

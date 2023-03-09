@@ -28,7 +28,7 @@ const RootLayout: FC<Props> = ({ children }) => {
       <Provider>
         <body className={`${inter.variable} font-inter`}>
           <Header />
-          <main className="mx-auto mt-16 max-w-6xl">{children}</main>
+          <main className="mx-auto mt-16 mb-8 max-w-6xl">{children}</main>
         </body>
       </Provider>
     </html>
