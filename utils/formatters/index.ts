@@ -34,3 +34,16 @@ export const getTimeAgo = (dateString: string): string => {
 export const prefixScore = (score: number): string => {
   return score > 0 ? `+${score}` : score.toString()
 }
+
+interface ObjectWithCreatedAt {
+  createdAt: string
+}
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const sortObjectsByCreatedAt = <T extends ObjectWithCreatedAt>(
+  objects: T[]
+): T[] =>
+  objects.sort((a, b) => {
+    const dateA = new Date(a.createdAt)
+    const dateB = new Date(b.createdAt)
+    return dateB.getTime() - dateA.getTime()
+  })

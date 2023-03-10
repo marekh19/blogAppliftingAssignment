@@ -13,7 +13,6 @@ import { UserIcon } from './parts/UserIcon'
 
 export const UserLogin: FC = () => {
   const { data: session } = useSession()
-  console.log(session)
   const [isDropMenuVisible, setIsDropMenuVisible] = useState<boolean>(false)
 
   const handleDropdownMenu = () => {
