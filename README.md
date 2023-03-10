@@ -100,6 +100,8 @@ Except that I did not implement responsive design even though it's something I'm
 
 I should've definitely refactored **Create New Article** and **Edit Article** pages to make a single component out of the majority that is same for both . I'm just out of energy for now 😫.
 
+And unfortunately did not have enough time remaining to implement at least some unit tests, let alone E2E Cypress test which I would have to do some research on, since I don't have experience with E2E tests in React.
+
 You can find below which points of this assignment I was able to implement and which not or only partially, including my comments.
 
 ### User Perspective
