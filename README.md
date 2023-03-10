@@ -98,6 +98,8 @@ It's a pitty that I did not implement **Featured Image** feature for articles. I
 
 Except that I did not implement responsive design even though it's something I'm very familiar with. From the beginning I knew the schedule will be very tight and felt like it would too much time at the expense of other features.
 
+I should've definitely refactored **Create New Article** and **Edit Article** pages to make a single component out of the majority that is same for both . I'm just out of energy for now 😫.
+
 You can find below which points of this assignment I was able to implement and which not or only partially, including my comments.
 
 ### User Perspective
