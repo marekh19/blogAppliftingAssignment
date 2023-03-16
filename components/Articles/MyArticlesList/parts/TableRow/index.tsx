@@ -32,6 +32,8 @@ export const TableRow: FC<Props> = ({
           className="transition-colors duration-100 hover:text-blue"
           type="button"
           onClick={() => onEdit(articleId)}
+          title="Edit"
+          aria-label="Edit Article"
         >
           <EditIcon className="w-6" />
         </button>
@@ -39,6 +41,8 @@ export const TableRow: FC<Props> = ({
           className="transition-colors duration-100 hover:text-error"
           type="button"
           onClick={async () => await onDelete(articleId)}
+          title="Delete"
+          aria-label="Delete Article"
         >
           <DeleteIcon className="w-6" />
         </button>
