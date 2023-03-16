@@ -1,53 +1,43 @@
 'use client'
 import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
-import type { FormEvent } from 'react'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import ReactMarkdown from 'react-markdown'
 
 import { Button } from '@components/Button'
-import { Input } from '@components/Input'
-import { TextArea } from '@components/Textarea'
-import { TogglePreview } from '@components/ToggleSwitch'
 import { createArticle } from '~/utils/api/articles'
-import { articleValidators } from '~/utils/validators/articleValidation'
+
+export type CreateArticleFormFields = {
+  title: string
+  perex: string
+  content: string
+}
 
 const CreateArticlePage: NextPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<CreateArticleFormFields>()
+
   // session
   const { data: session } = useSession()
   const accessToken = session?.user.access_token ?? ''
 
-  // article data
-  const [title, setTitle] = useState('')
-  const [perex, setPerex] = useState('')
-  const [content, setContent] = useState('')
-
-  // errors
-  const [titleError, setTitleError] = useState<string | null>(null)
-  const [contentError, setContentError] = useState<string | null>(null)
-  const [perexError, setPerexError] = useState<string | null>(null)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  // form data
+  const content = watch('content')
 
   // submitting state
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const [isPreviewEnabled, setIsPreviewEnabled] = useState(false)
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const errors = {
-      title: articleValidators.title(title),
-      perex: articleValidators.perex(perex),
-      content: articleValidators.content(content),
-    }
-
-    if (errors.title) setTitleError(errors.title)
-    if (errors.perex) setPerexError(errors.perex)
-    if (errors.content) setContentError(errors.content)
-
-    if (!titleError && !perexError && !contentError && session) {
+  const onSubmit = async (data: CreateArticleFormFields) => {
+    try {
+      const { title, perex, content } = data
+      console.log(data)
       setSubmitError(null)
       setIsSubmitting(true)
 
@@ -58,79 +48,92 @@ const CreateArticlePage: NextPage = () => {
         content,
       })
       if (res?.status === 200) {
-        setIsSubmitting(false)
         setIsSubmitted(true)
       } else {
-        setSubmitError('Something went wrong')
+        throw new Error('Failed during submission')
       }
+    } catch (x) {
+      if (x instanceof Error) {
+        setSubmitError('Something went wrong')
+        console.error(x)
+      }
+    } finally {
+      setIsSubmitting(false)
     }
-  }
-
-  const handlePreview = () => {
-    setIsPreviewEnabled((prev) => !prev)
   }
 
   return (
     <div>
-      {!isSubmitted ? (
-        <form onSubmit={handleSubmit}>
+      {!isSubmitted && (
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-8">
             <h1 className="text-4xl font-medium">Create New Article</h1>
             <Button isSubmit isDisabled={isSubmitting}>
               {isSubmitting ? 'Publishing' : 'Publish Article'}
             </Button>
           </div>
-          {submitError ? <p>{submitError}</p> : null}
-          <Input
-            label="Article Title"
-            className="mt-10 max-w-3xl"
-            type="text"
-            name="title"
-            placeholder="My First Article"
-            value={title}
-            error={titleError}
-            onChange={(event) => {
-              setTitleError(null)
-              setTitle(event.target.value)
-            }}
-          />
-          <TextArea
-            className="mt-10 max-w-3xl"
-            height="h-16"
-            label="Perex"
-            name="perex"
-            placeholder="My Article Perex"
-            value={perex}
-            error={perexError}
-            onChange={(event) => {
-              setPerexError(null)
-              setPerex(event.target.value)
-            }}
-          />
-          <TogglePreview
-            isToggled={isPreviewEnabled}
-            className="mt-10 mb-2"
-            onClick={handlePreview}
-          />
-          {isPreviewEnabled ? (
-            <ReactMarkdown className="prose max-w-3xl">{content}</ReactMarkdown>
-          ) : (
-            <TextArea
-              className="max-w-3xl"
-              height="h-96"
-              label="Content"
-              name="content"
-              placeholder="Supports markdown. Yay!"
-              value={content}
-              error={contentError}
-              onChange={(event) => {
-                setContentError(null)
-                setContent(event.target.value)
-              }}
-            />
-          )}
+          {submitError && <p className="mt-2 text-error">{submitError}</p>}
+          <div className="mt-10 max-w-3xl">
+            <label>
+              <span>Article Title</span>
+              <input
+                {...register('title')}
+                aria-invalid={errors.title ? 'true' : 'false'}
+                placeholder="My First Article"
+                type="text"
+                className={`mt-2 h-[36px] w-full rounded-md border ${
+                  errors.title?.message ? 'border-error' : 'border-gray-100'
+                } px-3 py-[6px] placeholder-secondary outline-none focus:border-blue focus:shadow-focus`}
+              />
+            </label>
+            {errors.title?.type === 'required' && (
+              <p className="text-error">{errors.title?.message}</p>
+            )}
+          </div>
+          <div className="mt-10 max-w-3xl">
+            {errors.perex?.type === 'required' && (
+              <p className="text-error">{errors.perex?.message}</p>
+            )}
+            <label>
+              <span>Perex</span>
+              <textarea
+                {...register('perex')}
+                aria-invalid={errors.perex ? 'true' : 'false'}
+                placeholder="My Article Perex"
+                className={`mt-2 h-16 w-full rounded-md border ${
+                  errors.perex?.message ? 'border-error' : 'border-gray-100'
+                } px-3 py-[6px] placeholder-secondary outline-none focus:border-blue focus:shadow-focus`}
+              />
+            </label>
+          </div>
+
+          <div className="mt-8 flex gap-4">
+            <div className="flex-1">
+              {errors.content?.type === 'required' && (
+                <p className="text-error">{errors.content?.message}</p>
+              )}
+              <label>
+                <span>Content</span>
+                <textarea
+                  {...register('content')}
+                  aria-invalid={errors.content ? 'true' : 'false'}
+                  placeholder="Supports markdown. Yay!"
+                  className={`mt-2 h-[40rem] w-full rounded-md border ${
+                    errors.content?.message ? 'border-error' : 'border-gray-100'
+                  } resize-none px-3 py-[6px] placeholder-secondary outline-none focus:border-blue focus:shadow-focus`}
+                />
+              </label>
+            </div>
+            <div className="flex-1">
+              <h3>Preview</h3>
+              <ReactMarkdown className="prose max-w-3xl">
+                {content}
+              </ReactMarkdown>
+            </div>
+          </div>
         </form>
-      ) : (
+      )}
+      {isSubmitted && (
         <h1 className="text-4xl font-medium">
           Article Successfully Published!
         </h1>
