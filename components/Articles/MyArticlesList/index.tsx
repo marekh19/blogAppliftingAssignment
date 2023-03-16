@@ -8,6 +8,7 @@ import Loading from '~/app/loading'
 import { Routes } from '~/constants/routes'
 import { getAllArticles } from '~/utils/api/articles'
 import { deleteArticle } from '~/utils/api/articles'
+import { sortObjectsByCreatedAt } from '~/utils/formatters'
 
 import { TableRow } from './parts/TableRow'
 
@@ -27,7 +28,8 @@ export const MyArticlesList: FC = () => {
     const getArticleData = async () => {
       const articles = await getAllArticles()
       if (articles) {
-        setArticles(articles)
+        const sortedArticles = sortObjectsByCreatedAt(articles)
+        setArticles(sortedArticles)
       }
     }
 
